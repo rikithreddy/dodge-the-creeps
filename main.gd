@@ -5,7 +5,17 @@ export (PackedScene) var Mob
 var score = 0
 var high_score = 0
 
+var colors = [
+	Color("#41658A"), # queen blue 
+	Color("#594F3B"), # ash grey
+	Color("#3E5641"), # hunter green
+	Color("#407076"), #Ming
+	Color("#9DB4C0"), # panzy purple
+	
+	]
+
 func new_game():
+	
 	$BGM.play()
 	$HUD/credits.hide()
 	score = 0
@@ -17,10 +27,16 @@ func new_game():
 func _ready():
 	randomize()
 
+func set_background_color():
+	$ColorRect.set_frame_color(colors[randi()% len(colors)])
+	pass
+	
 func _on_ScoreTimer_timeout():
 	score += 1
 	if high_score < score:
 		high_score = score
+	if score % 3 == 0:
+		set_background_color()
 	$HUD.update_score(score, high_score)
 
 

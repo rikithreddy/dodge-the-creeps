@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://main.gd" type="Script" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://HUD.tscn" type="PackedScene" id=4]
 [ext_resource path="res://dodge_assets/art/gameover.wav" type="AudioStream" id=5]
 [ext_resource path="res://dodge_assets/art/House In a Forest Loop.ogg" type="AudioStream" id=6]
+[ext_resource path="res://dodge_assets/art/background.jpg" type="Texture" id=7]
 
 [sub_resource type="Curve2D" id=1]
 _data = {
@@ -16,7 +17,14 @@ _data = {
 script = ExtResource( 2 )
 Mob = ExtResource( 3 )
 
+[node name="background" type="Sprite" parent="."]
+modulate = Color( 0.0901961, 0.0901961, 0.0901961, 1 )
+position = Vector2( 212.566, 317.325 )
+scale = Vector2( 0.792542, 0.801762 )
+texture = ExtResource( 7 )
+
 [node name="ColorRect" type="ColorRect" parent="."]
+modulate = Color( 1, 1, 1, 0.780392 )
 margin_right = 480.0
 margin_bottom = 720.0
 color = Color( 0.207843, 0.396078, 0.482353, 1 )
@@ -25,6 +33,7 @@ __meta__ = {
 }
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
+scale = Vector2( 0.8, 0.8 )
 
 [node name="start_position" type="Position2D" parent="."]
 position = Vector2( 240, 450 )
@@ -40,7 +49,7 @@ position = Vector2( -240, -450 )
 one_shot = true
 
 [node name="MobTimer" type="Timer" parent="."]
-wait_time = 0.5
+wait_time = 0.25
 
 [node name="ScoreTimer" type="Timer" parent="."]
 
