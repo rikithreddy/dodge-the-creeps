@@ -1,22 +1,15 @@
 extends Area2D
 
-export (int) var SPEED
-var screen_size: Vector2 = OS.window_size
 var direction: Vector2
 var velocity: Vector2
 var animator: AnimatedSprite
+onready var movementObj = PlayerMovement.new()
 
 signal hit
 
 func _enter_tree():
 	hide()
 	$AnimatedSprite.play("idle")
-
-func movement(delta):
-	if direction.length() > 0:
-		position += direction.normalized() * SPEED * delta
-		position.x = clamp(position.x, 0, screen_size.x)
-		position.y = clamp(position.y, 128, screen_size.y)
 
 func animate():
 	$Trail.set_emitting(true)	
@@ -48,7 +41,7 @@ func get_direction():
 
 func _physics_process(delta):
 	get_direction()
-	movement(delta)
+	position = movementObj.movement(position, direction, delta)
 	animate()
 
 func start(pos):
@@ -60,5 +53,5 @@ func start(pos):
 func _on_Player_body_entered(body):
 	hide()
 	emit_signal("hit")
-	$CollisionShape2D.disabled = true
+	call_deferred("set_monitoring", false)
 
