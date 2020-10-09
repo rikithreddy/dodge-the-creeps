@@ -13,7 +13,7 @@ var colors = [
 func new_game():
 	$Background/ColorRect.set_frame_color(colors[randi()% len(colors)])	
 	$HUD/Start.hide()
-	$BGM.play()
+	$BGM.play(4)
 	$HUD/credits.hide()
 	GameVariables.LAST_SCORE = 0
 	$Score.update_score()	

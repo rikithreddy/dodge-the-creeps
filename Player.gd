@@ -44,6 +44,9 @@ func _physics_process(delta):
 	position = movementObj.movement(position, direction, delta)
 	animate()
 
+	print(position)
+	print(OS.window_size)
+	
 func start(pos):
 	position = pos
 	show()

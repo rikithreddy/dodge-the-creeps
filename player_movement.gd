@@ -1,7 +1,7 @@
 class_name PlayerMovement
 
 var SPEED = 400
-var screen_size: Vector2 = OS.window_size
+var screen_size: Vector2 = GameVariables.SCREEN_DIMENSIONS
 
 func _ready():
 	pass # Replace with function body.
