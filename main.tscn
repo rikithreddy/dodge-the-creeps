@@ -1,12 +1,13 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://main.gd" type="Script" id=2]
 [ext_resource path="res://Mob.tscn" type="PackedScene" id=3]
 [ext_resource path="res://HUD.tscn" type="PackedScene" id=4]
 [ext_resource path="res://dodge_assets/art/gameover.wav" type="AudioStream" id=5]
-[ext_resource path="res://dodge_assets/art/House In a Forest Loop.ogg" type="AudioStream" id=6]
-[ext_resource path="res://dodge_assets/art/background.jpg" type="Texture" id=7]
+[ext_resource path="res://dodge_assets/art/through space.ogg" type="AudioStream" id=6]
+[ext_resource path="res://Background.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Score.tscn" type="PackedScene" id=8]
 
 [sub_resource type="Curve2D" id=1]
 _data = {
@@ -17,23 +18,14 @@ _data = {
 script = ExtResource( 2 )
 Mob = ExtResource( 3 )
 
-[node name="background" type="Sprite" parent="."]
-modulate = Color( 0.0901961, 0.0901961, 0.0901961, 1 )
-position = Vector2( 212.566, 317.325 )
-scale = Vector2( 0.792542, 0.801762 )
-texture = ExtResource( 7 )
+[node name="Background" parent="." instance=ExtResource( 7 )]
 
-[node name="ColorRect" type="ColorRect" parent="."]
-modulate = Color( 1, 1, 1, 0.780392 )
-margin_right = 480.0
-margin_bottom = 720.0
-color = Color( 0.207843, 0.396078, 0.482353, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="Score" parent="." instance=ExtResource( 8 )]
+
+[node name="HUD" parent="." instance=ExtResource( 4 )]
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
-scale = Vector2( 0.8, 0.8 )
+scale = Vector2( 0.75, 0.75 )
 
 [node name="start_position" type="Position2D" parent="."]
 position = Vector2( 240, 450 )
@@ -49,11 +41,9 @@ position = Vector2( -240, -450 )
 one_shot = true
 
 [node name="MobTimer" type="Timer" parent="."]
-wait_time = 0.25
+wait_time = 0.3
 
 [node name="ScoreTimer" type="Timer" parent="."]
-
-[node name="HUD" parent="." instance=ExtResource( 4 )]
 
 [node name="BGM" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 6 )
@@ -64,8 +54,13 @@ stream = ExtResource( 5 )
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( 240, 360 )
 current = true
+
+[node name="GameOver" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+[connection signal="start_game" from="HUD" to="." method="new_game"]
 [connection signal="hit" from="Player" to="." method="game_over"]
 [connection signal="timeout" from="StartTimer" to="." method="_on_StartTimer_timeout"]
 [connection signal="timeout" from="MobTimer" to="." method="_on_MobTimer_timeout"]
 [connection signal="timeout" from="ScoreTimer" to="." method="_on_ScoreTimer_timeout"]
-[connection signal="start_game" from="HUD" to="." method="new_game"]
+[connection signal="timeout" from="GameOver" to="." method="_on_GameOver_timeout"]

@@ -21,8 +21,12 @@ _global_script_class_icons={
 [application]
 
 config/name="Dodge"
-run/main_scene="res://main.tscn"
+run/main_scene="res://Menu.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+GameVariables="*res://game_variables.gd"
 
 [display]
 

@@ -2,42 +2,40 @@ extends Node2D
 
 const FILE_NAME = "user://game-data.json"
 export (PackedScene) var Mob
-var score = 0
-var high_score = 0
 
 var colors = [
 	Color("#41658A"), # queen blue 
-	Color("#594F3B"), # ash grey
+	Color("#35657B"), # ash grey
 	Color("#3E5641"), # hunter green
 	Color("#407076"), #Ming
-	Color("#9DB4C0"), # panzy purple
-	
 	]
 
 func new_game():
-	
+	$Background/ColorRect.set_frame_color(colors[randi()% len(colors)])	
+	$HUD/Start.hide()
 	$BGM.play()
 	$HUD/credits.hide()
-	score = 0
-	$HUD.update_score(score, high_score)	
+	GameVariables.LAST_SCORE = 0
+	$Score.update_score()	
 	$Player.start($start_position.position)
 	$StartTimer.start()
 	$HUD.show_msg("Get Ready")
 	
 func _ready():
 	randomize()
+	new_game()
 
 func set_background_color():
-	$ColorRect.set_frame_color(colors[randi()% len(colors)])
+	$Background/ColorRect.set_frame_color(colors[randi()% len(colors)])
 	pass
 	
 func _on_ScoreTimer_timeout():
-	score += 1
-	if high_score < score:
-		high_score = score
-	if score % 3 == 0:
+	GameVariables.LAST_SCORE += 1
+	if GameVariables.HIGH_SCORE < GameVariables.LAST_SCORE:
+		GameVariables.HIGH_SCORE = GameVariables.LAST_SCORE 
+	if GameVariables.LAST_SCORE % 3 == 0:
 		set_background_color()
-	$HUD.update_score(score, high_score)
+	$Score.update_score()
 
 
 func _on_MobTimer_timeout():
@@ -56,7 +54,12 @@ func _on_StartTimer_timeout():
 
 func game_over():
 	$BGM.stop()
-	$HUD.game_over()
 	$ScoreTimer.stop()
 	$MobTimer.stop()
 	$game_over.play()
+	$HUD.game_over()
+	$GameOver.start()
+
+func _on_GameOver_timeout():
+	get_tree().change_scene("res://Menu.tscn")
+	
