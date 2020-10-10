@@ -5,7 +5,7 @@
 [ext_resource path="res://Mob.tscn" type="PackedScene" id=3]
 [ext_resource path="res://HUD.tscn" type="PackedScene" id=4]
 [ext_resource path="res://dodge_assets/art/gameover.wav" type="AudioStream" id=5]
-[ext_resource path="res://dodge_assets/art/Metaruka - The End (Death Screen mix by Avgvst).ogg" type="AudioStream" id=6]
+[ext_resource path="res://dodge_assets/art/through space.ogg" type="AudioStream" id=6]
 [ext_resource path="res://Background.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Score.tscn" type="PackedScene" id=8]
 
@@ -17,6 +17,10 @@ _data = {
 [node name="main" type="Node2D"]
 script = ExtResource( 2 )
 Mob = ExtResource( 3 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2( 240, 360 )
+current = true
 
 [node name="Background" parent="." instance=ExtResource( 7 )]
 
@@ -51,16 +55,21 @@ stream = ExtResource( 6 )
 [node name="game_over" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 5 )
 
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2( 240, 360 )
-current = true
-
 [node name="GameOver" type="Timer" parent="."]
 wait_time = 2.0
 one_shot = true
-[connection signal="start_game" from="HUD" to="." method="new_game"]
+
+[node name="ScreenShake" type="Tween" parent="."]
+
+[node name="TotalTime" type="Timer" parent="ScreenShake"]
+one_shot = true
+
+[node name="Frequency" type="Timer" parent="ScreenShake"]
+wait_time = 0.001
 [connection signal="hit" from="Player" to="." method="game_over"]
 [connection signal="timeout" from="StartTimer" to="." method="_on_StartTimer_timeout"]
 [connection signal="timeout" from="MobTimer" to="." method="_on_MobTimer_timeout"]
 [connection signal="timeout" from="ScoreTimer" to="." method="_on_ScoreTimer_timeout"]
 [connection signal="timeout" from="GameOver" to="." method="_on_GameOver_timeout"]
+[connection signal="timeout" from="ScreenShake/TotalTime" to="." method="_on_TotalTime_timeout"]
+[connection signal="timeout" from="ScreenShake/Frequency" to="." method="_on_Frequency_timeout"]

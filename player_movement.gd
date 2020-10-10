@@ -11,6 +11,6 @@ func movement(position, direction, delta):
 	if direction.length() > 0:
 		position += direction.normalized() * SPEED * delta
 		position.x = clamp(position.x, 0, screen_size.x)
-		position.y = clamp(position.y, 128, screen_size.y)
-
+		position.y = clamp(position.y, 96, screen_size.y)
+	print(position)
 	return position

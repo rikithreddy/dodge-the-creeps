@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Player.gd" type="Script" id=1]
 [ext_resource path="res://dodge_assets/art/playerGrey_walk2.png" type="Texture" id=2]
@@ -6,10 +6,47 @@
 [ext_resource path="res://dodge_assets/art/playerGrey_up2.png" type="Texture" id=4]
 [ext_resource path="res://dodge_assets/art/playerGrey_up1.png" type="Texture" id=5]
 
-[sub_resource type="Gradient" id=1]
+[sub_resource type="Animation" id=1]
+resource_name = "Death"
+length = 0.7
+tracks/0/type = "bezier"
+tracks/0/path = NodePath("AnimatedSprite:scale:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0.5, -0.25, 0, 0.25, 0, 0.4, -0.25, 0, 0.25, 0, 0.3, -0.25, 0, 0.25, 0, 0.25, -0.25, 0, 0.25, 0, 0.2, -0.25, 0, 0.25, 0, 0.15, -0.25, 0, 0.25, 0, 0.1, -0.25, 0, 0.25, 0, 0.05, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath("AnimatedSprite:scale:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 0.5, -0.25, 0, 0.25, 0, 0.4, -0.25, 0, 0.25, 0, 0.3, -0.25, 0, 0.25, 0, 0.25, -0.25, 0, 0.25, 0, 0.2, -0.25, 0, 0.25, 0, 0.15, -0.25, 0, 0.25, 0, 0.1, -0.25, 0, 0.25, 0, 0.05, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 )
+}
+tracks/2/type = "bezier"
+tracks/2/path = NodePath("AnimatedSprite:rotation_degrees")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 45, -0.25, 0, 0.25, 0, 90, -0.25, 0, 0.25, 0, 135, -0.25, 0, 0.25, 0, 180, -0.25, 0, 0.25, 0, 225, -0.25, 0, 0.25, 0, 270, -0.25, 0, 0.25, 0, 315, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 )
+}
+
+[sub_resource type="Gradient" id=2]
 colors = PoolColorArray( 0.511719, 1, 0.988556, 1, 1, 1, 1, 0 )
 
-[sub_resource type="SpriteFrames" id=2]
+[sub_resource type="CapsuleShape2D" id=3]
+radius = 28.0274
+
+[sub_resource type="SpriteFrames" id=4]
 animations = [ {
 "frames": [ ExtResource( 3 ), ExtResource( 2 ) ],
 "loop": true,
@@ -27,14 +64,14 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[sub_resource type="CapsuleShape2D" id=3]
-radius = 28.0274
-
 [node name="Player" type="Area2D"]
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_group_": true
 }
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Death = SubResource( 1 )
 
 [node name="Trail" type="CPUParticles2D" parent="."]
 amount = 25
@@ -45,13 +82,18 @@ emission_shape = 1
 emission_sphere_radius = 17.62
 gravity = Vector2( 0, 0 )
 scale_amount = 5.0
-color_ramp = SubResource( 1 )
-
-[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
-scale = Vector2( 0.5, 0.5 )
-frames = SubResource( 2 )
-animation = "idle"
+color_ramp = SubResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 3 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+scale = Vector2( 0.5, 0.5 )
+frames = SubResource( 4 )
+animation = "idle"
+
+[node name="DeathTimer" type="Timer" parent="."]
+wait_time = 0.7
+one_shot = true
 [connection signal="body_entered" from="." to="." method="_on_Player_body_entered"]
+[connection signal="timeout" from="DeathTimer" to="." method="_on_DeathTimer_timeout"]

@@ -44,9 +44,6 @@ func _physics_process(delta):
 	position = movementObj.movement(position, direction, delta)
 	animate()
 
-	print(position)
-	print(OS.window_size)
-	
 func start(pos):
 	position = pos
 	show()
@@ -54,7 +51,13 @@ func start(pos):
 	$CollisionShape2D.disabled = false
 
 func _on_Player_body_entered(body):
-	hide()
+	$AnimationPlayer.play("Death")
+	$Trail.set_emitting(false)
 	emit_signal("hit")
 	call_deferred("set_monitoring", false)
+	$DeathTimer.start()
 
+
+
+func _on_DeathTimer_timeout():
+	hide()
