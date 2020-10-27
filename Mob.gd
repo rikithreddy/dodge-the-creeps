@@ -1,7 +1,7 @@
 extends RigidBody2D
 
-var MIN_SPEED = 300
-var MAX_SPEED = 500
+var MIN_SPEED = 150
+var MAX_SPEED = 350
 const TYPES = ["fly", "swim", "walk"]
 var type : String
 

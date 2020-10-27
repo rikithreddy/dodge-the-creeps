@@ -9,14 +9,14 @@ outline_size = 8
 outline_color = Color( 0.0392157, 0.0745098, 0.254902, 1 )
 font_data = ExtResource( 1 )
 
-[sub_resource type="DynamicFont" id=3]
+[sub_resource type="DynamicFont" id=2]
 size = 12
 outline_size = 2
 outline_color = Color( 0.0196078, 0.0431373, 0.211765, 1 )
 font_data = ExtResource( 1 )
 
-[sub_resource type="DynamicFont" id=4]
-size = 12
+[sub_resource type="DynamicFont" id=3]
+size = 10
 outline_size = 2
 outline_color = Color( 0.0392157, 0.0745098, 0.254902, 1 )
 font_data = ExtResource( 1 )
@@ -55,21 +55,22 @@ margin_left = -144.0
 margin_top = 328.0
 margin_right = -16.0
 margin_bottom = 344.0
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 2 )
 text = "Created by: Rikith"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Controls" type="Label" parent="."]
-margin_left = 32.0
-margin_top = 656.0
-margin_right = 142.0
-margin_bottom = 722.0
-custom_fonts/font = SubResource( 4 )
+margin_left = 24.4319
+margin_top = 647.591
+margin_right = 134.432
+margin_bottom = 720.591
+custom_fonts/font = SubResource( 3 )
 text = "Controls
 - W,A,S,D
-- Arrow Keys"
+- Arrow Keys
+- Swipe"
 __meta__ = {
 "_edit_use_anchors_": false
 }

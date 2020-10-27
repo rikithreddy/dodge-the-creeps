@@ -2,13 +2,23 @@ extends Node2D
 
 const FILE_NAME = "user://game-data.json"
 export (PackedScene) var Mob
+
+var PowerUp = preload("res://Power-up.tscn")
+
 onready var Display = $Background/background
+
 
 var colors = [
 	Color("#41658A"), # queen blue 
 	Color("#35657B"), # ash grey
 	Color("#3E5641"), # hunter green
 	Color("#407076"), #Ming
+	Color("#4E937A"),
+	Color("#C7F2A7"),
+	Color("#355070"),
+	Color("#EAAC8B"),
+	Color("#6D597A"),
+	Color("#AFB3F7"),
 	]
 
 func new_game():
@@ -45,7 +55,9 @@ func _on_MobTimer_timeout():
 	direction += rand_range(-PI/4, PI/4)
 	mob.rotation = direction
 	mob.global_position = $Path2D/PathFollow2D.global_position
-	mob.set_linear_velocity(Vector2(rand_range(mob.MIN_SPEED, mob.MAX_SPEED), 0).rotated(direction))
+	var x = min(mob.MIN_SPEED + GameVariables.LAST_SCORE * 5, 350)
+	var y = min(mob.MAX_SPEED + GameVariables.LAST_SCORE * 5, 500)
+	mob.set_linear_velocity(Vector2(rand_range(x, y), 0).rotated(direction))
   
 func _on_StartTimer_timeout():
 	$ScoreTimer.start()
@@ -119,3 +131,28 @@ func _on_TotalTime_timeout():
 					$ScreenShake.EASE_IN_OUT
 					)
 	$ScreenShake.start()
+
+
+func _on_Powerup_power_up():
+	$PowerUpAudio.play()
+	$Player.scale.x /= 2
+	$Player.scale.y /= 2
+	$Player/Power.emitting = true
+	$PowerDuration.start()
+
+func _on_PowerUpTimer_timeout():
+	var pwr = PowerUp.instance()
+	add_child(pwr)
+	pwr.position.x = rand_range(50, GameVariables.SCREEN_DIMENSIONS.x - 50)
+	pwr.position.y = 96
+	pwr.connect("power_up", self, "_on_Powerup_power_up")
+
+
+func _on_PowerDuration_timeout():
+	$PowerUpAudio.stop()
+	$Player.scale.x *= 2
+	$Player.scale.y *= 2
+	$Player/Power.emitting = false
+	$PowerUpTimer.wait_time = rand_range(2, 4)
+	$PowerUpTimer.start()
+
